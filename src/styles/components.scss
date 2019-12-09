@@ -1,0 +1,392 @@
+.st1 {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+}
+.element {
+  height: 50px;
+  width: 50px;
+  margin: 10px;
+}
+.white {
+  fill: #ffffff;
+}
+.gray {
+  fill: #e0e0e0;
+}
+.yellow {
+  fill: #ffeb3b;
+}
+
+.weather-info-subtitle {
+  .subtitle {
+    @include card-subtitle;
+  }
+}
+.suggest-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(7, 153, 146, 0.95);
+  padding: 1rem 0rem;
+  z-index: 999999;
+  border-radius: 2px;
+  color: white;
+  font-weight: 300;
+  font-size: 0.5rem;
+  font-family: $inconsolata;
+  min-width: 200%;
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  @include create-mediaquery($grid-bp-sm) {
+    z-index: 99999;
+    min-width: 100vw;
+    .suggestion {
+      padding: 2rem 1rem !important;
+    }
+  }
+  h1 {
+    padding: 0rem 1rem;
+    font-weight: 300;
+  }
+  .suggestion {
+    margin: 0.5rem;
+    font-weight: 300;
+    background: rgba(255, 255, 255, 0.2);
+    transition: 0.3s;
+    cursor: pointer;
+    padding: 1.5rem 1rem;
+    @include flexbox();
+    @include align-items(center);
+    @include flex-just(space-between);
+    .suggestion-icon {
+      opacity: 0.5;
+    }
+    .suggestion-info {
+      h1 {
+        font-size: 1.2rem;
+        padding: 0;
+      }
+      p {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+.day-card {
+  @include flexbox();
+  display: inline-flex;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease-out;
+  @include flex-direction(column);
+  @include align-items(center);
+  @include flex-just(center);
+  padding: 1.5rem 1.5rem;
+  .weather-card-icon {
+    margin: 0;
+  }
+  &.active-card {
+    background: rgba(255, 255, 255, 0.3);
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 100%);
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+
+      border-top: 20px solid rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+.additional-weather-info {
+  @include flexbox();
+  @include flex-direction(column);
+  width: 100%;
+  margin: 1rem 0;
+  .weather-updated {
+    @include small-text;
+  }
+  .weather-info-wrapper {
+    @include flexbox();
+    width: 100%;
+    @include flex-just(center);
+    margin: 2.5rem 0;
+    .additional-wind,
+    .additional-humidity {
+      white-space: nowrap;
+      @include small-text;
+      margin: 0 1.7rem;
+    }
+  }
+}
+.chart-wrapper {
+  height: 230px;
+  @each $breakpoint in $flexboxgrid-breakpoints {
+    $name: nth($breakpoint, 1);
+    $size: nth($breakpoint, 2);
+    $container: nth($breakpoint, 3);
+    @media only screen and (min-width: $size) {
+      width: $container;
+    }
+  }
+  text,
+  g {
+    color: #fff;
+    fill: #fff !important;
+    font-size: 0.8rem !important;
+    font-weight: bold;
+    font-family: $nanum !important;
+  }
+}
+.modal-wrapper {
+  width: 350px;
+  padding: 1rem;
+  border-radius: 4px;
+  background: rgba(33, 150, 243, 0.9);
+  color: white;
+  @include flexbox();
+  @include flex-just(space-between);
+
+  font-family: $inconsolata !important;
+  font-size: 1.2rem;
+}
+.spinner-wrapper {
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+  @include flexbox();
+  @include flex-just(center);
+  .lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    margin: 6px;
+    border: 6px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1),
+  .small-spinner div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2),
+  .small-spinner div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3),
+  .small-spinner div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .small-spinner {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    cursor: wait;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    div {
+      width: 22px;
+      height: 22px;
+      border: 3px solid #fff;
+      border-color: #fff transparent transparent transparent;
+      border-radius: 50%;
+    }
+  }
+}
+.error-wrapper {
+  @include flexbox();
+  @include flex-direction(column);
+  width: 100%;
+  padding: 3rem;
+  @include align-items(center);
+  text-align: center;
+  font-size: 1.2rem;
+  color: white;
+  svg {
+    font-size: 3rem;
+  }
+  h1 {
+    color: white;
+    font-weight: 500;
+    font-family: $hepta;
+    display: block;
+    width: 100%;
+    margin: 1rem 0rem;
+  }
+}
+.navbar {
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 65px;
+  position: relative;
+  .navbar-content {
+    @include flexbox();
+    @include flex-just(space-between);
+    width: 100%;
+    height: 100%;
+  }
+}
+.hourly-icons {
+  @include flexbox();
+  width: 100%;
+  @include flex-just(space-between);
+  @each $breakpoint in $flexboxgrid-breakpoints {
+    $name: nth($breakpoint, 1);
+    $size: nth($breakpoint, 2);
+    $container: nth($breakpoint, 3);
+    @media only screen and (min-width: $size) {
+      width: $container;
+    }
+  }
+  .element {
+    width: 20px;
+    height: 20px;
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.main-section {
+  width: 100%;
+  min-height: calc(100vh - 65px);
+  background: transparent;
+  @include flexbox();
+  @include flex-direction(column);
+}
+.content {
+  @include flexbox();
+  @include flex-direction(column);
+  @include align-items(center);
+}
+.info-card {
+  background: transparent;
+  @include flexbox();
+  @include flex-direction(column);
+  width: 100%;
+  padding: 1rem 0rem 0rem 0rem;
+}
+.togglers-wrapper {
+  @include flexbox();
+  padding: 0.5rem;
+  margin-left: 1.5rem;
+  @include flex-direction(column);
+  .toggler {
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: normal;
+    color: rgba(211, 211, 211, 0.8);
+    font-family: $inconsolata;
+    margin: 0.2rem 0;
+  }
+  .active {
+    color: white;
+  }
+}
+.weather-card-info {
+  background: transparent;
+  @include flexbox();
+  @include flex-just(center);
+  @include align-items(center);
+}
+.weather-card-degrees {
+  @include card-heading;
+}
+.weather-card-icon {
+  margin-right: 1.5rem;
+  .element {
+    width: 40px;
+    height: 40px;
+  }
+}
+.input-wrapper {
+  @include input-wrapper;
+  display: inline-block;
+  .input-search {
+    @include default-input;
+    background: rgba(0, 0, 0, 0.15);
+    height: 100%;
+    font-size: 1rem;
+    padding: 0rem 2rem 0rem 2rem;
+    &:focus + .input-icon {
+      transition: 0.3s ease-out;
+    }
+  }
+  .input-button {
+    height: 100%;
+    min-width: 60px;
+    cursor: pointer;
+    @include input-button;
+    @include flexbox();
+    @include flex-direction(column);
+    @include align-items(center);
+    @include flex-just(center);
+    .input-icon {
+      left: 50%;
+      font-weight: 200;
+      font-size: 1.5rem;
+    }
+    span {
+      display: inline-block;
+      width: 35px;
+      height: 2px;
+      margin: 2px;
+      background: rgba(164, 176, 190, 0.95);
+    }
+  }
+  .input-icon {
+    @include icon;
+    color: rgba(164, 176, 190, 0.95);
+    left: 90%;
+    font-weight: 200;
+    font-size: 1.2rem;
+  }
+}
+.input-button-absolute {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  @include create-mediaquery($grid-bp-sm) {
+    position: relative;
+    left: 0;
+    transform: translate(0, 0);
+  }
+}
+.App {
+  background: $gradient;
+  width: 100%;
+  min-height: 100%;
+}
