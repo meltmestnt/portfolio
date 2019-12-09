@@ -1,0 +1,81 @@
+@mixin input-wrapper {
+  @include flexbox();
+  background: transparent;
+  height: 100%;
+  position: relative;
+}
+
+@mixin icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@mixin card-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 200;
+  font-size: 1.5rem;
+  font-family: $inconsolata;
+}
+@mixin small-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 200;
+  font-size: 0.8rem;
+  font-family: $inconsolata;
+}
+@mixin card-heading {
+  font-family: $hepta;
+  font-weight: bold;
+  color: white;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(100%, 0);
+    border: 3px solid white;
+    border-radius: 50%;
+    width: 15%;
+    height: 15%;
+  }
+}
+@mixin input-button {
+  background: transparent;
+  height: 100%;
+  border: 3px solid transparent;
+  outline: none;
+  transition: 0.15s ease-out;
+  &:focus {
+    border: 3px solid #00a8ff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 1px #00a8ff;
+  }
+}
+
+@mixin default-input {
+  padding: 0.3rem 0.6rem 0.3rem 0.6rem;
+  min-width: 175px;
+  min-height: 60px;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  font-family: $inconsolata;
+  font-size: 1.3rem;
+  border: 3px solid transparent;
+  outline: none;
+  transition: 0.15s ease-out;
+  &:focus {
+    border: 3px solid #00a8ff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px 1px #00a8ff;
+  }
+  &::placeholder {
+    color: rgba(164, 176, 190, 0.95);
+  }
+}
+
+@mixin create-mediaquery($breakpoint) {
+  @media only screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
