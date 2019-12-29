@@ -52,7 +52,7 @@ export const grabData = url => {
       dispatch(fetchError(error));
       return;
     }
-    console.log(res);
+
     if (res && res.status === 200) {
       body = formatState(res.data);
     } else {

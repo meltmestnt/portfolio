@@ -9,6 +9,9 @@ import DayCard from "./DayCard";
 import ErrorView from "./../components/ErrorView";
 import { Trail, Transition, animated } from "react-spring/renderprops";
 import { config, interpolate } from "react-spring";
+import GifGuide from "./../components/GifGuide";
+import Dialog from "./Dialog";
+import NetworkError from "./../components/NetworkError";
 export class MainSection extends Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
@@ -142,7 +145,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainSection);
+export default connect(mapStateToProps, mapDispatchToProps)(MainSection);

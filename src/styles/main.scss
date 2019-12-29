@@ -3,3 +3,7 @@
 @import "variables.scss";
 @import "mixins.scss";
 @import "components.scss";
+
+body {
+  padding-bottom: 0px !important;
+}

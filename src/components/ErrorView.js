@@ -1,21 +1,22 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-
+import NetworkError from "./NetworkError";
 function ErrorView(props) {
   let err = props.error && props.error.message;
   console.dir(err);
+  let content = null;
   if (!err) {
-    err = "Something went wrong";
+    content = (
+      <>
+        <h1>{err}</h1>
+        <FontAwesomeIcon icon={faExclamationTriangle}></FontAwesomeIcon>
+      </>
+    );
   } else if (err === "Network Error") {
-    err += ". Please refresh the page or wait some time.";
+    content = <NetworkError></NetworkError>;
   }
-  return (
-    <div className="error-wrapper">
-      <h1>{err}</h1>
-      <FontAwesomeIcon icon={faExclamationTriangle}></FontAwesomeIcon>
-    </div>
-  );
+  return <div className="error-wrapper">{content}</div>;
 }
 
 export default ErrorView;

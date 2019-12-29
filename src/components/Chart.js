@@ -29,6 +29,13 @@ function Chart(props) {
               data={[initializeData(props)]}
               margin={{ top: 50, right: 20, bottom: 125, left: 20 }}
               xScale={{ type: "point" }}
+              yScale={{
+                type: "linear",
+                min: "auto",
+                max: "auto",
+                stacked: true,
+                reverse: false
+              }}
               axisTop={null}
               axisRight={null}
               curve={"natural"}

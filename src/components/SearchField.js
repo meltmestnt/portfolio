@@ -18,7 +18,7 @@ const limiter = () => {
         clearTimeout(idTimeout);
       }
       idTimeout = setTimeout(() => {
-        func().catch(e => console.log(e));
+        func().catch(e => console.log("Oops! Error", e));
         canCall = true;
       }, 500);
     }
@@ -188,7 +188,4 @@ const mapDispatchToProps = {
   grabData
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(SearchField);
+export default connect(null, mapDispatchToProps)(SearchField);
