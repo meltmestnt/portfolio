@@ -47,12 +47,12 @@
     height: 50%;
     background: #ff3f34;
     opacity: 0.5;
-    transform: translateY(75%);
+    transform: translateY(90%);
     transition: 0.5s;
   }
   &:hover {
     &::after {
-      transform: translateY(50%);
+      transform: translateY(60%);
       opacity: 0.65;
     }
   }
