@@ -42,15 +42,17 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 110%;
     height: 100%;
     background: #ff3f34;
+    opacity: 0.3;
     transform: translateY(75%);
     transition: 0.5s;
   }
   &:hover {
     &::after {
       transform: translateY(50%);
+      opacity: 0.5;
     }
   }
 }
