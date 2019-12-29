@@ -15,7 +15,7 @@ function NetworkError(props) {
       >
         More about mixed content.
       </a>
-      <div style={{ margin: "10px 0px" }}>
+      <div style={{ margin: "40px 0px" }}>
         <GifGuide></GifGuide>
       </div>
     </div>
