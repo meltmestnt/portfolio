@@ -2,7 +2,7 @@ import React from "react";
 import GifGuide from "./GifGuide";
 function NetworkError(props) {
   return (
-    <div>
+    <div className="network-error">
       <p>
         This is not your fault! Please, enable mixed content to get rid of this
         error. This error occurs because i use OpenWeather MAP API that uses
@@ -15,14 +15,7 @@ function NetworkError(props) {
       >
         More about mixed content.
       </a>
-      <div
-        style={{
-          margin: "40px 0px",
-          objectFit: "cover",
-          maxWidth: "800px",
-          maxHeight: "auto"
-        }}
-      >
+      <div className="network-error-image">
         <GifGuide></GifGuide>
       </div>
     </div>
