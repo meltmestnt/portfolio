@@ -45,8 +45,10 @@ export class MainSection extends Component {
   }
   render() {
     let items = [];
-    for (const d of this.props.hours) {
-      items.push(d);
+    if (!this.props.error) {
+      for (const d of this.props.hours) {
+        items.push(d);
+      }
     }
     const mainRender = (
       <div className="main-section">
