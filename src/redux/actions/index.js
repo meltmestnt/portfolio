@@ -4,46 +4,46 @@ import {
   FETCH_DATA_ERROR,
   SELECT_DAY,
   weekdays,
-  CHANGE_TEMPERATURE
+  CHANGE_TEMPERATURE,
 } from "../constants";
 import axios from "axios";
 import dayjs from "dayjs";
 
-export const changeTemperature = tempType => {
+export const changeTemperature = (tempType) => {
   return {
     type: CHANGE_TEMPERATURE,
-    tempType
+    tempType,
   };
 };
 export const fetchDataStart = () => {
   return {
-    type: FETCH_DATA_START
+    type: FETCH_DATA_START,
   };
 };
-export const fetchSuccess = data => {
+export const fetchSuccess = (data) => {
   return {
     type: FETCH_DATA_SUCCESS,
     receivedAt: Date.now(),
-    data
+    data,
   };
 };
-export const fetchError = err => {
+export const fetchError = (err) => {
   return {
     type: FETCH_DATA_ERROR,
-    err
+    err,
   };
 };
 
-export const selectDay = day => {
+export const selectDay = (day) => {
   return {
     type: SELECT_DAY,
-    day
+    day,
   };
 };
 
 // thunk
-export const grabData = url => {
-  return async dispatch => {
+export const grabData = (url) => {
+  return async (dispatch) => {
     dispatch(fetchDataStart());
     let res, body;
     try {
@@ -64,29 +64,31 @@ export const grabData = url => {
 };
 
 const formatState = ({ city, list }) => {
-  let hours = {};
+  let hours = new Map();
   let country = city.country;
   let cityName = city.name;
   list.forEach((item, i) => {
-    let date = dayjs.unix(item.dt - dayjs.unix(item.dt).utcOffset() * 60);
+    let date = dayjs(item.dt_txt);
 
     let hour = {
       hour: date.hour(),
       weekDay: weekdays[date.day()],
+
       temp: item.main.temp - 273.15,
       windSpeed: item.wind.speed * 2.237,
       humidity: `${item.main.humidity}%`,
       description: item.weather[0].description,
-      icon: item.weather[0].icon
+      icon: item.weather[0].icon,
     };
-
-    hours[date.date()]
-      ? hours[date.date()].push(hour)
-      : (hours[date.date()] = [hour]);
+    hours.has(date.date())
+      ? hours.get(date.date()).push(hour)
+      : hours.set(date.date(), [hour]);
   });
+  console.log("Map hours", hours);
+  console.log("ENTRIES", hours.entries());
   return {
     hours,
     cityName,
-    country
+    country,
   };
 };

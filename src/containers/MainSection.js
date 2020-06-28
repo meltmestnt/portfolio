@@ -24,9 +24,9 @@ export class MainSection extends Component {
     navigator.permissions
       ? navigator.permissions
           .query({
-            name: `geolocation`
+            name: `geolocation`,
           })
-          .then(perm => {
+          .then((perm) => {
             perm.state === "granted"
               ? navigator.geolocation.getCurrentPosition(
                   ({ coords: { latitude, longitude } }) => {
@@ -44,18 +44,28 @@ export class MainSection extends Component {
         );
   }
   render() {
-    let graph =
-      Object.entries(this.props.hours).length > 0 ? (
-        <Chart
-          isFetching={this.props.isFetching}
-          data={collectData(this.props.hours, this.props.currentDay)}
-        ></Chart>
-      ) : (
-        <div className="spinner-wrapper">
-          <Spinner></Spinner>
+    if (!this.props.hours.size) {
+      return (
+        <div className="main-section">
+          <div className="container">
+            <div className="spinner-wrapper">
+              <Spinner></Spinner>
+            </div>
+          </div>
         </div>
       );
+    }
+    let graph = (
+      <Chart
+        isFetching={this.props.isFetching}
+        data={collectData(this.props.hours, this.props.currentDay)}
+      ></Chart>
+    );
     const error = this.props.error;
+    let items = [];
+    for (const d of this.props.hours) {
+      items.push(d);
+    }
     const mainRender = (
       <div className="main-section">
         <div className="container">
@@ -72,32 +82,37 @@ export class MainSection extends Component {
               <div className="row around-xs" style={{ padding: "2rem 0rem" }}>
                 <Trail
                   native
-                  items={Object.entries(this.props.hours)}
-                  keys={item => item[0]}
+                  items={items}
+                  keys={(item) => item[0]}
                   from={{ y: 50, opacity: 0 }}
                   to={{
                     y: 0,
-                    opacity: 1
+                    opacity: 1,
                   }}
                   reset={this.props.isFetching}
                 >
-                  {item => ({ opacity, y }) => {
-                    return (
-                      <animated.div
-                        style={{
-                          opacity,
-                          transform: y.interpolate(y => `translateY(${y}px)`),
-                          flexGrow: "1",
-                          flexShrink: "0",
-                          flexBasis: "0px"
-                        }}
-                      >
-                        <DayCard
-                          active={this.props.currentDay.day}
-                          day={item[0]}
-                        ></DayCard>
-                      </animated.div>
-                    );
+                  {(item) => {
+                    const day = item[0];
+                    return ({ opacity, y }) => {
+                      return (
+                        <animated.div
+                          style={{
+                            opacity,
+                            transform: y.interpolate(
+                              (y) => `translateY(${y}px)`
+                            ),
+                            flexGrow: "1",
+                            flexShrink: "0",
+                            flexBasis: "0px",
+                          }}
+                        >
+                          <DayCard
+                            active={this.props.currentDay.day}
+                            day={day}
+                          ></DayCard>
+                        </animated.div>
+                      );
+                    };
                   }}
                 </Trail>
               </div>
@@ -120,8 +135,8 @@ const collectData = (hours, currentDay) => {
 
   if (data.length < 8) {
     let day = `${+currentDay.day + 1}`;
-    if (hours[day]) {
-      hours[day].forEach(day => {
+    if (hours.get(day)) {
+      hours.get(day).forEach((day) => {
         if (data.length < 8) {
           data.push(day);
         }
@@ -133,15 +148,15 @@ const collectData = (hours, currentDay) => {
 };
 
 const mapDispatchToProps = {
-  grabData
+  grabData,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    hours: { ...state.hours },
+    hours: state.hours,
     currentDay: { ...state.currentDay },
     error: state.error,
-    isFetching: state.isFetching
+    isFetching: state.isFetching,
   };
 };
 

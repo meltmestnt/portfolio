@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import "./styles/main.scss";
 
 const logger = createLogger();
-const store = createStore(reducer, applyMiddleware(thunkMiddleware, logger));
+const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 class App extends React.Component {
   render() {
     return (

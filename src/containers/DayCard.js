@@ -10,7 +10,7 @@ function DayCard(props) {
   let weatherStyles = {
     flexDirection: "column",
     padding: "0.5rem",
-    fontSize: "1rem"
+    fontSize: "1rem",
   };
   const icon = props.icon ? determineIcon(props) : <Spinner></Spinner>;
 
@@ -26,7 +26,7 @@ function DayCard(props) {
           color: "white",
           fontSize: "1rem",
           fontFamily: "Inconsolata",
-          fontWeight: "300"
+          fontWeight: "300",
         }}
       >
         {props.weekDay}
@@ -46,37 +46,38 @@ function DayCard(props) {
 
 const mapStateToProps = (state, ownProps) => {
   let day = ownProps.day;
-  const dayInfo = state.hours && state.hours[day];
+  const dayInfo = state.hours && state.hours.get(day);
+  console.log("DAYINFO", dayInfo);
   return {
     weekDay: dayInfo[0].weekDay,
     hour: {
       temp:
-        day === Object.keys(state.hours)[0]
+        day === state.hours.keys()[0]
           ? dayInfo[0].temp.toFixed(0)
           : (
               dayInfo.reduce((p, c, i, arr) => {
                 if (arr.length === 1) return p;
                 return p + c.temp;
               }, dayInfo[0].temp) / dayInfo.length
-            ).toFixed(0)
+            ).toFixed(0),
     },
     icon:
-      day === Object.keys(state.hours)[0]
+      day === state.hours.keys()[0]
         ? dayInfo[0].icon
         : dayInfo.length > 1
         ? dayInfo[(dayInfo.length / 2).toFixed(0)].icon
         : dayInfo[0].icon,
     description:
-      day === Object.keys(state.hours)[0]
+      day === state.hours.keys()[0]
         ? dayInfo[0].description
         : dayInfo.length > 1
         ? dayInfo[(dayInfo.length / 2).toFixed(0)].description
-        : dayInfo[0].description
+        : dayInfo[0].description,
   };
 };
 
 const mapDispatchToProps = {
-  selectDay
+  selectDay,
 };
 export default connect(
   mapStateToProps,

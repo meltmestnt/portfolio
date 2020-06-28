@@ -12,13 +12,13 @@ import { grabData } from "./../redux/actions";
 const limiter = () => {
   let canCall = true,
     idTimeout = null;
-  return async func => {
+  return async (func) => {
     if (!canCall) {
       if (idTimeout) {
         clearTimeout(idTimeout);
       }
       idTimeout = setTimeout(() => {
-        func().catch(e => console.log("Oops! Error", e));
+        func().catch((e) => console.log("Oops! Error", e));
         canCall = true;
       }, 500);
     }
@@ -39,7 +39,7 @@ function SearchField(props) {
     suggest: false,
     spinner: false,
     input: "",
-    suggestions: []
+    suggestions: [],
   });
 
   // ref to access our input field with suggestions, and remove it when clicked outside
@@ -48,12 +48,12 @@ function SearchField(props) {
 
   // check if we clicked outside our input field or suggestions block
 
-  const handleDocumentClick = ev => {
+  const handleDocumentClick = (ev) => {
     if (ref.current && !ref.current.contains(ev.target)) {
       toggleSuggest({
         ...state,
         spinner: false,
-        suggest: false
+        suggest: false,
       });
     }
   };
@@ -74,15 +74,15 @@ function SearchField(props) {
     }
     limit(async () => {
       let res = await axios.get(
-        `https://wft-geo-db.p.mashape.com//v1/geo/cities`,
+        `https://wft-geo-db.p.rapidapi.com/v1/geo/cities`,
         {
           params: {
-            namePrefix: state.input
+            namePrefix: state.input,
           },
           headers: {
             "X-Mashape-Key":
-              "55de880fc7mshcc1d69d745ec59fp1c2cb7jsn2be7a85997c9"
-          }
+              "55de880fc7mshcc1d69d745ec59fp1c2cb7jsn2be7a85997c9",
+          },
         }
       );
       toggleSuggest({
@@ -97,10 +97,10 @@ function SearchField(props) {
               latitude,
               region,
               id,
-              countryCode
+              countryCode,
             };
           }
-        )
+        ),
       });
     });
   }, [state]);
@@ -113,7 +113,7 @@ function SearchField(props) {
     toggleSuggest({
       ...state,
       spinner: false,
-      suggest: false
+      suggest: false,
     });
   };
 
@@ -124,18 +124,18 @@ function SearchField(props) {
       style={props.styles ? props.styles : {}}
     >
       <input
-        onChange={e => {
+        onChange={(e) => {
           toggleSuggest({
             ...state,
             spinner: true,
-            input: e.target.value
+            input: e.target.value,
           });
         }}
         onFocus={() => {
           toggleSuggest({
             ...state,
 
-            suggest: true
+            suggest: true,
           });
         }}
         placeholder={props.placeh}
@@ -163,9 +163,9 @@ function SearchField(props) {
         enter={{ opacity: 1 }}
         leave={{ opacity: 0 }}
       >
-        {item =>
+        {(item) =>
           item
-            ? props => (
+            ? (props) => (
                 <animated.div
                   className="suggest-container"
                   style={{ ...props }}
@@ -185,7 +185,7 @@ function SearchField(props) {
 }
 
 const mapDispatchToProps = {
-  grabData
+  grabData,
 };
 
 export default connect(null, mapDispatchToProps)(SearchField);

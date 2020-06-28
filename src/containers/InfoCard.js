@@ -16,13 +16,13 @@ export class InfoCard extends Component {
     let weatherStyles = {
       flexDirection: `${this.props.column ? "column" : "row"}`,
       padding: `0.5rem`,
-      fontSize: `${this.props.column ? "1rem" : "2rem"}`
+      fontSize: `${this.props.column ? "1rem" : "2rem"}`,
     };
     let headerStyles = {
       color: "white",
       fontSize: `${this.props.column ? "1rem" : "1.8rem"}`,
       fontFamily: "Inconsolata",
-      fontWeight: "300"
+      fontWeight: "300",
     };
     let icon = this.props.hour.description ? (
       determineIcon({ ...this.props.hour })
@@ -65,14 +65,14 @@ const mapStateToProps = (state, ownProps) => {
     receivedAt = state.receivedAt,
     city = state.city,
     country = state.country;
-  if (state.hours && Object.entries(state.hours).length > 0) {
-    const stateHour = state.hours[Object.keys(state.hours)[0]][0];
+  if (state.hours && state.hours.size) {
+    const stateHour = state.hours.entries().next().value[1][0];
     hour = {
       temp: stateHour.temp.toFixed(0),
       humidity: stateHour.humidity,
       windSpeed: `${stateHour.windSpeed.toFixed(0)}mph`,
       description: stateHour.description,
-      icon: stateHour.icon
+      icon: stateHour.icon,
     };
   } else {
     hour = {};
@@ -81,11 +81,8 @@ const mapStateToProps = (state, ownProps) => {
     hour,
     receivedAt,
     city,
-    country
+    country,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(withDegrees(InfoCard));
+export default connect(mapStateToProps, null)(withDegrees(InfoCard));

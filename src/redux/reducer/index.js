@@ -3,7 +3,7 @@ import {
   FETCH_DATA_SUCCESS,
   FETCH_DATA_ERROR,
   SELECT_DAY,
-  CHANGE_TEMPERATURE
+  CHANGE_TEMPERATURE,
 } from "../constants";
 
 export default function weather(
@@ -15,7 +15,7 @@ export default function weather(
     city: "",
     country: "",
     receivedAt: null,
-    currentDay: null
+    currentDay: null,
   },
   action
 ) {
@@ -24,13 +24,13 @@ export default function weather(
       return {
         ...state,
         temperature:
-          action.tempType === "C" ? "C" : action.tempType === "F" ? "F" : null
+          action.tempType === "C" ? "C" : action.tempType === "F" ? "F" : null,
       };
       break;
     case FETCH_DATA_START:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
       };
       break;
     case SELECT_DAY:
@@ -38,8 +38,8 @@ export default function weather(
         ...state,
         currentDay: {
           day: action.day,
-          hours: [...state.hours[action.day]]
-        }
+          hours: [...state.hours.get(action.day)],
+        },
       };
       break;
     case FETCH_DATA_SUCCESS:
@@ -51,15 +51,15 @@ export default function weather(
         isFetching: false,
         receivedAt: action.receivedAt,
         currentDay: {
-          day: Object.keys(action.data.hours)[0],
-          hours: action.data.hours[Object.keys(action.data.hours)[0]]
-        }
+          day: new Date().getDate(),
+          hours: action.data.hours.get(new Date().getDate()),
+        },
       };
       break;
     case FETCH_DATA_ERROR:
       return {
         isFetching: false,
-        error: action.err
+        error: action.err,
       };
       break;
     default:

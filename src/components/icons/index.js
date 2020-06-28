@@ -22,7 +22,7 @@ const obj = {
   "light rain": Rainy,
   thunderstorm: CloudyLightning,
   snow: Snowy,
-  mist: SunnyWind
+  mist: SunnyWind,
 };
 export default obj;
 
@@ -35,6 +35,10 @@ export const determineIcon = ({ description, icon }) => {
     return icon === "04d" ? Cloudy : CloudyMoon;
   } else if (description.indexOf("snow") !== -1) {
     return Snowy;
+  } else if (description.indexOf("rain") !== -1) {
+    return Rainy;
+  } else if (description.indexOf("clouds") !== -1) {
+    return Cloudy;
   } else {
     return obj[description];
   }
