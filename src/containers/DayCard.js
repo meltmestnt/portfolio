@@ -58,7 +58,7 @@ const mapStateToProps = (state, ownProps) => {
               dayInfo.reduce((p, c, i, arr) => {
                 if (arr.length === 1) return p;
                 return p + c.temp;
-              }, dayInfo[0].temp) / dayInfo.length
+              }, 0) / dayInfo.length
             ).toFixed(0),
     },
     icon:
