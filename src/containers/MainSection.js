@@ -44,24 +44,6 @@ export class MainSection extends Component {
         );
   }
   render() {
-    if (!this.props.hours.size) {
-      return (
-        <div className="main-section">
-          <div className="container">
-            <div className="spinner-wrapper">
-              <Spinner></Spinner>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    let graph = (
-      <Chart
-        isFetching={this.props.isFetching}
-        data={collectData(this.props.hours, this.props.currentDay)}
-      ></Chart>
-    );
-    const error = this.props.error;
     let items = [];
     for (const d of this.props.hours) {
       items.push(d);
@@ -69,53 +51,68 @@ export class MainSection extends Component {
     const mainRender = (
       <div className="main-section">
         <div className="container">
-          {error ? (
-            <ErrorView error={error}></ErrorView>
+          {this.props.error ? (
+            <ErrorView error={this.props.error}></ErrorView>
           ) : (
             <ErrorBoundary>
-              <div className="row center-xs">
-                <div className="col-xs-12 center-xs">
-                  <InfoCard additionalInfo></InfoCard>
-                  {graph}
-                </div>
-              </div>
-              <div className="row around-xs" style={{ padding: "2rem 0rem" }}>
-                <Trail
-                  native
-                  items={items}
-                  keys={(item) => item[0]}
-                  from={{ y: 50, opacity: 0 }}
-                  to={{
-                    y: 0,
-                    opacity: 1,
-                  }}
-                  reset={this.props.isFetching}
-                >
-                  {(item) => {
-                    const day = item[0];
-                    return ({ opacity, y }) => {
-                      return (
-                        <animated.div
-                          style={{
-                            opacity,
-                            transform: y.interpolate(
-                              (y) => `translateY(${y}px)`
-                            ),
-                            flexGrow: "1",
-                            flexShrink: "0",
-                            flexBasis: "0px",
-                          }}
-                        >
-                          <DayCard
-                            active={this.props.currentDay.day}
-                            day={day}
-                          ></DayCard>
-                        </animated.div>
-                      );
-                    };
-                  }}
-                </Trail>
-              </div>
+              {this.props.hours.size ? (
+                <>
+                  <div className="row center-xs">
+                    <div className="col-xs-12 center-xs">
+                      <InfoCard additionalInfo></InfoCard>
+                      <Chart
+                        isFetching={this.props.isFetching}
+                        data={collectData(
+                          this.props.hours,
+                          this.props.currentDay
+                        )}
+                      ></Chart>
+                    </div>
+                  </div>
+                  <div
+                    className="row around-xs"
+                    style={{ padding: "2rem 0rem" }}
+                  >
+                    <Trail
+                      native
+                      items={items}
+                      keys={(item) => item[0]}
+                      from={{ y: 50, opacity: 0 }}
+                      to={{
+                        y: 0,
+                        opacity: 1,
+                      }}
+                      reset={this.props.isFetching}
+                    >
+                      {(item) => {
+                        const day = item[0];
+                        return ({ opacity, y }) => {
+                          return (
+                            <animated.div
+                              style={{
+                                opacity,
+                                transform: y.interpolate(
+                                  (y) => `translateY(${y}px)`
+                                ),
+                                flexGrow: "1",
+                                flexShrink: "0",
+                                flexBasis: "0px",
+                              }}
+                            >
+                              <DayCard
+                                active={this.props.currentDay.day}
+                                day={day}
+                              ></DayCard>
+                            </animated.div>
+                          );
+                        };
+                      }}
+                    </Trail>
+                  </div>
+                </>
+              ) : (
+                <Spinner></Spinner>
+              )}
             </ErrorBoundary>
           )}
         </div>
